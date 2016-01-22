@@ -22,46 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.goodgames.ponggame;
-
-import com.goodgames.ponggame.gameobjects.Bat;
+package com.goodgames.ponggame.gameobjects;
 
 /**
  *
  * @author lahtelat
  */
-public class Game {
-    
-    Bat player1, player2;
-    
-    public Bat getPlayerBat(){return player1;}
-    
-    public Game(){
-        player1 = new Bat();
-        player2 = new Bat();
-        
-    }
-    
-    public void render(){
-        
-        //renderöi esineet
-        
-        player1.render();
-        //player2.render();
-        
-        
-    }
-    
-    /*
-    
-    Sovelluksen logiikka(mailojen ja pallon törmäys, pallon liikkuminen) tulee tähän
-    
-    */
-    public void update(double deltaTime){
-        
-        
-        
-    }
-    
+public class Ball {
     
 }
