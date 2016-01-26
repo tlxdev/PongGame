@@ -56,7 +56,7 @@ public class Shader {
     private void makeShader(String shaderName) {
 
         /*
-         shaderit tallennetaan shaders/nimi.vert/frag
+         shaderit tallennetaan shaders/nimi.vert ja shaders/nimi.frag
          */
         String vert = readFile("shaders/" + shaderName + ".vert");
 
@@ -90,7 +90,12 @@ public class Shader {
         glAttachShader(shaderId, vertId);
         glAttachShader(shaderId, fragId);
 
-        glBindAttribLocation(shaderId, 0, "position");
+        /*
+            attribuutti 0 tällä hetkellä shadereissa aina position
+        */
+        
+        
+        glBindAttribLocation(getShaderId(), 0, "position");
 
         glLinkProgram(shaderId);
         String infoLog = GL20.glGetProgramInfoLog(shaderId);

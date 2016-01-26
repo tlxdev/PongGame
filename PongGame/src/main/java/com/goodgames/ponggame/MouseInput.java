@@ -23,69 +23,58 @@
  */
 package com.goodgames.ponggame;
 
-import com.goodgames.ponggame.gameobjects.Ball;
-import com.goodgames.ponggame.gameobjects.Bat;
-import org.joml.Vector3f;
+import java.nio.DoubleBuffer;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.lwjgl.BufferUtils;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  *
  * @author lahtelat
  */
-public class Game {
+public class MouseInput {
 
-    Bat player1, player2;
+    private long windowId;
 
-    Camera camera;
+    //private Quaternionf rotate = new Qu aternionf();
+    private double lastX, lastY;
 
-    private MouseInput input;
+    public MouseInput(long windowId) {
+        this.windowId = windowId;
+
+        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
+
+        glfwGetCursorPos(windowId, xPos, yPos);
+        lastX = xPos.get();
+        lastY = yPos.get();
+
+    }
     
-    public Bat getPlayerBat() {
-        return player1;
-    }
-
-    public Camera getCamera() {
-        return camera;
-    }
-
-    private Ball ball;
-
-    
-    public Game() {
-        camera = new Camera();
-        ball = new Ball(this);
-        player1 = new Bat(this);
-        player2 = new Bat(this);
-        player2.move(0, -3);
-        player1.move(0, 2);
-        
-        ball.setDirection(new Vector3f(0.5f, 0, 0.5f).normalize());
-
-    }
-
-    public void render() {
-
-        //renderöi esineet
-        player1.render();
-        player2.render();
-        ball.render();
-
-    }
-
     /*
-    
-     Sovelluksen logiikka(mailojen ja pallon törmäys, pallon liikkuminen) tulee tähän
-    
-     */
-    public void update(double deltaTime) {
+        mouseinput luokka: hiiren painallukset ja liikutukset
+    */
 
-        input.update(deltaTime);
-        ball.update(deltaTime);
-
-            
+    public MouseInput() {
     }
-    
-    public void setWindowId(long id){
-        input = new MouseInput(id);
+
+    public void update(double deltaTime) {
+        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
+
+        glfwGetCursorPos(windowId, xPos, yPos);
+        double x = xPos.get();
+        double y = yPos.get();
+
+        double dX = lastX - x;
+        double dY = lastY - y;
+
+        //System.out.println("dx dy " + dX + " " + dY);
+        lastX = x;
+        lastY = y;
+
+        //TODO: kameran rotaatio hiirellä
     }
 
 }

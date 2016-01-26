@@ -21,71 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.goodgames.ponggame;
 
-import com.goodgames.ponggame.gameobjects.Ball;
-import com.goodgames.ponggame.gameobjects.Bat;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /**
  *
  * @author lahtelat
  */
-public class Game {
-
-    Bat player1, player2;
-
-    Camera camera;
-
-    private MouseInput input;
+public class Camera {
     
-    public Bat getPlayerBat() {
-        return player1;
-    }
-
-    public Camera getCamera() {
-        return camera;
-    }
-
-    private Ball ball;
-
+    private Matrix4f viewMatrix;
+    private Matrix4f projectionMatrix;
     
-    public Game() {
-        camera = new Camera();
-        ball = new Ball(this);
-        player1 = new Bat(this);
-        player2 = new Bat(this);
-        player2.move(0, -3);
-        player1.move(0, 2);
-        
-        ball.setDirection(new Vector3f(0.5f, 0, 0.5f).normalize());
-
-    }
-
-    public void render() {
-
-        //renderöi esineet
-        player1.render();
-        player2.render();
-        ball.render();
-
-    }
-
-    /*
+    private Vector3f up = new Vector3f(0, 1, 0);
     
-     Sovelluksen logiikka(mailojen ja pallon törmäys, pallon liikkuminen) tulee tähän
+    private Vector3f cameraPos = new Vector3f(5, 5, 0);
     
-     */
-    public void update(double deltaTime) {
-
-        input.update(deltaTime);
-        ball.update(deltaTime);
-
-            
+    private Matrix4f viewProjectionMatrix = new Matrix4f();
+    
+    public Camera() {
+        viewMatrix = new Matrix4f().lookAt(cameraPos, new Vector3f(0, 0, 0), up);
+        projectionMatrix = new Matrix4f().perspective((float) Math.toRadians((double) 45), 4.f / 3.f, 0.1f, 100.f);
+    
+        projectionMatrix.mul(viewMatrix, viewProjectionMatrix);
+    
     }
     
-    public void setWindowId(long id){
-        input = new MouseInput(id);
+    public Matrix4f getViewProjectionMatrix(){
+        return viewProjectionMatrix;
     }
-
+    
 }

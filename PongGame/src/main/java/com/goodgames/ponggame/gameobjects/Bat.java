@@ -23,9 +23,11 @@
  */
 package com.goodgames.ponggame.gameobjects;
 
+import com.goodgames.ponggame.Game;
 import com.goodgames.ponggame.Shader;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Random;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -33,6 +35,7 @@ import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.opengl.GL15;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -40,7 +43,7 @@ import static org.lwjgl.opengl.GL20.*;
  *
  * @author lahtelat
  */
-public class Bat extends GameObject{
+public class Bat extends GameObject {
 
     float[] verts2 = { //2d neliö
         -0.5f, 0.5f, 0f,
@@ -100,47 +103,62 @@ public class Bat extends GameObject{
 
     int vertAmount;
 
-    public Bat() {
+    public Bat(Game game) {
+        super(game);
         generateBuffers();
         currentShader = new Shader("test");
+
     }
 
     private void generateBuffers() {
         vertBuffer = glGenBuffers();
+        System.out.println("vertbuffer on " + vertBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
         FloatBuffer buffer = BufferUtils.createFloatBuffer(verts.length);
         buffer.put(verts);
         buffer.flip();
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-
-        vertAmount = verts.length / 3; //1 vertex=3 kolmiota
+        vertAmount = verts.length / 3; //1 vertex=3 kolmiota, kun käytetään GL_TRIANGLES
         System.out.println("vertamount on " + vertAmount);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, -1);
     }
 
     public void render() {
 
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
         glUseProgram(currentShader.getShaderId());
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
-        
-        int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
-        
-        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model matrix TODO: perspektiivi ja projektio
-        new Matrix4f().translate(new Vector3f(x, 0, y)).get(matrix4x4);
 
+        glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+
+        int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
+
+        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+
+        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(1, 0.2f, 0.05f);
+
+        Matrix4f vpm = game.getCamera().getViewProjectionMatrix();
+        Matrix4f mvp = new Matrix4f();
+        vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
+        mvp.get(matrix4x4);
+        
+        /*
+            mvp matriisi shaderille
+        */
         
         glUniformMatrix4fv(mvpMatrixId, false, matrix4x4);
-        //indeksi 0 shaderissa koordinaatit modelspacessa
-        //3 koordinaattia xyz, w koordinaatti 1 aina(suunta vs piste)
-
+       
         glDrawArrays(GL_TRIANGLES, 0, vertAmount);
         glDisableVertexAttribArray(0);
         glUseProgram(0);
 
-    }
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+        GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+
+    }
 }

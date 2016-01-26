@@ -1,5 +1,3 @@
-#version 110
-
 attribute vec3 position;
 
 varying vec4 color;

@@ -51,7 +51,7 @@ public class GameWindow implements Runnable {
         }
 
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
+        glfwWindowHint(GLFW_SAMPLES, 2);//antialiasisointi
         windowId = glfwCreateWindow(800, 600, "Pong", NULL, NULL);
 
         glfwMakeContextCurrent(windowId);
@@ -74,6 +74,7 @@ public class GameWindow implements Runnable {
     public void startGame() {
 
         game = new Game();
+        game.setWindowId(windowId);
 
         lastFrameTime = glfwGetTime();
         run();
@@ -81,15 +82,11 @@ public class GameWindow implements Runnable {
     }
 
     public void render() {
-        // glViewport(0, 0, 800, 600);
-        glClearColor(0.0f, 1.0f, 1.0f, 0.0f);//aseta clearcolor rgb 1,1,1(valkoinen)
+        glClearColor(0.0f, 0.5f, 0.5f, 1.0f);//aseta clearcolor rgb 1,1,1(valkoinen)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //tyhjennä puskurit
         game.render();
         glfwSwapBuffers(windowId);
 
-        // GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);  
-        // set the color of the quad (R,G,B,A)
-        // glfwSwapBuffers(windowId);
     }
 
     private void input() {
@@ -106,11 +103,7 @@ public class GameWindow implements Runnable {
     @Override
     public void run() {
 
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, 800, 0, 600, 1, -1);
-        
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        glEnable(GL_DEPTH_TEST); //jotta toisten esineiden takana olevia ei renderöidä
 
         while (glfwWindowShouldClose(windowId) == GLFW_FALSE) {
             double currentTime = glfwGetTime();
@@ -119,22 +112,23 @@ public class GameWindow implements Runnable {
             lastFrameTime = currentTime;
 
             update(deltaTime);
+
         }
 
     }
 
-    private void onKeyPress(int key, int action) { //TODO: kunnon luokka input hallinnalle, pelin logiikka ja input erikseen.. ettei pieni fps=hidas liike
-        if(action == GLFW_RELEASE){
-        
-        if (key == GLFW_KEY_A) {
-            game.getPlayerBat().move(-0.1f, 0);
-        
-        } else if (key == GLFW_KEY_D) {
+    private void onKeyPress(int key, int action) { //TODO: kunnon luokka input hallinnalle
+        if (action == GLFW_RELEASE) {
 
-            game.getPlayerBat().move(0.1f, 0);
+            if (key == GLFW_KEY_A) {
+                game.getPlayerBat().move(-0.1f, 0);
 
-        }
-        
+            } else if (key == GLFW_KEY_D) {
+
+                game.getPlayerBat().move(0.1f, 0);
+
+            }
+
         }
 
     }
