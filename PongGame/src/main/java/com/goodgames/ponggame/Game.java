@@ -23,9 +23,16 @@
  */
 package com.goodgames.ponggame;
 
+import com.goodgames.ponggame.input.MouseInput;
+import com.goodgames.ponggame.input.KeyboardInput;
 import com.goodgames.ponggame.gameobjects.Ball;
 import com.goodgames.ponggame.gameobjects.Bat;
+import com.goodgames.ponggame.gameobjects.GameObject;
+import com.goodgames.ponggame.gameobjects.Wall;
+import java.util.ArrayList;
+import java.util.Random;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 /**
  *
@@ -33,14 +40,28 @@ import org.joml.Vector3f;
  */
 public class Game {
 
+    ArrayList<GameObject> objects = new ArrayList<>();
+
     Bat player1, player2;
+
+    Wall wall1, wall2;
 
     Camera camera;
 
     private MouseInput input;
-    
+
+    private KeyboardInput keyboardInput;
+
+    private long windowId;
+
+    private long frameCounter = 0;
+
     public Bat getPlayerBat() {
         return player1;
+    }
+
+    public Bat getEnemyBat() {
+        return player2;
     }
 
     public Camera getCamera() {
@@ -49,15 +70,18 @@ public class Game {
 
     private Ball ball;
 
-    
     public Game() {
         camera = new Camera();
         ball = new Ball(this);
         player1 = new Bat(this);
         player2 = new Bat(this);
+        wall1 = new Wall(this);
+        wall2 = new Wall(this);
+        wall1.move(2, 0);
+        wall2.move(-2, 0);
         player2.move(0, -3);
         player1.move(0, 2);
-        
+
         ball.setDirection(new Vector3f(0.5f, 0, 0.5f).normalize());
 
     }
@@ -67,6 +91,8 @@ public class Game {
         //renderöi esineet
         player1.render();
         player2.render();
+        wall1.render();
+        wall2.render();
         ball.render();
 
     }
@@ -77,15 +103,37 @@ public class Game {
     
      */
     public void update(double deltaTime) {
-
-        input.update(deltaTime);
         ball.update(deltaTime);
 
-            
+        /*
+         Päivitä fps vain joka viidestoista frame(muuten se on liian vaikea lukea)     
+         */
+        if (frameCounter == 15) {
+            frameCounter = 0;
+        }
+        if (frameCounter == 0) {
+            GLFW.glfwSetWindowTitle(windowId, "Pong FPS: " + (int) (1 / deltaTime));
+        }
+
+        frameCounter++;
+
+        input.update(deltaTime);
+        keyboardInput.update(deltaTime);
+
+        if (ball.getY() > 3.2 || ball.getY() < -2) {
+            System.out.println("lose");
+            ball = new Ball(this);
+
+            ball.setDirection(new Vector3f(Math.max(new Random().nextFloat(), 0.5f), 0, Math.max(new Random().nextFloat(), 0.5f)).normalize());
+
+        }
+
     }
-    
-    public void setWindowId(long id){
+
+    public void setWindowId(long id) {
+        this.windowId = id;
         input = new MouseInput(id);
+        keyboardInput = new KeyboardInput(id, this);
     }
 
 }

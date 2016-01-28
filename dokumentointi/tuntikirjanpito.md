@@ -9,3 +9,5 @@
 25/1/15: Pallon renderöinti, perus entity-tyyppinen käyttäytyminen: 2h
 
 27/1/15: Pallon törmäykset, yms : 1h
+
+28/1/15: Refaktorointia, ominaisuuksia yms. alkaa jo näyttämään peliltä. 2h

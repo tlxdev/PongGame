@@ -118,18 +118,18 @@ public class GameWindow implements Runnable {
     }
 
     private void onKeyPress(int key, int action) { //TODO: kunnon luokka input hallinnalle
-        if (action == GLFW_RELEASE) {
+        /*if (action == GLFW_RELEASE) {
 
-            if (key == GLFW_KEY_A) {
+            if (key == GLFW_KEY_UP) {
                 game.getPlayerBat().move(-0.1f, 0);
 
-            } else if (key == GLFW_KEY_D) {
+            } else if (key == GLFW_KEY_DOWN) {
 
                 game.getPlayerBat().move(0.1f, 0);
 
             }
 
-        }
+        }*/
 
     }
 

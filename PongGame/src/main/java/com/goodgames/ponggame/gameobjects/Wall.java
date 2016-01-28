@@ -44,16 +44,7 @@ import static org.lwjgl.opengl.GL20.*;
  *
  * @author lahtelat
  */
-public class Bat extends GameObject {
-
-    float[] verts2 = { //2d neliö
-        -0.5f, 0.5f, 0f,
-        -0.5f, -0.5f, 0f,
-        0.5f, -0.5f, 0f,
-        0.5f, -0.5f, 0f,
-        0.5f, 0.5f, 0f,
-        -0.5f, 0.5f, 0f
-    };
+public class Wall extends GameObject {
 
     Shader currentShader;
 
@@ -104,18 +95,17 @@ public class Bat extends GameObject {
 
     int vertAmount;
 
-    public Bat(Game game) {
+    public Wall(Game game) {
         super(game);
         model = new Model(verts, "test");
-        // generateBuffers();
-        //currentShader = new Shader("test");
 
     }
 
     public void render() {
+
         FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi
 
-        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(0.5f, 0.2f, 0.05f);
+        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).rotate(1.5708f, 0, 1, 0).scale(10f, 0.2f, 0.05f);
 
         Matrix4f vpm = game.getCamera().getViewProjectionMatrix();
         Matrix4f mvp = new Matrix4f();

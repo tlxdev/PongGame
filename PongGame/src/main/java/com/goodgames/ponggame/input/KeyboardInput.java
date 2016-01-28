@@ -21,54 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.goodgames.ponggame.gameobjects;
+package com.goodgames.ponggame.input;
 
-import com.goodgames.ponggame.rendering.Model;
 import com.goodgames.ponggame.Game;
-import org.joml.Vector3f;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  *
  * @author lahtelat
  */
-public class GameObject {
+public class KeyboardInput {
 
-    protected Game game;
+    private long id;
+    private Game game;
 
-    public GameObject(Game game) {
+    public KeyboardInput(long windowId, Game game) {
+        this.id = windowId;
         this.game = game;
-    }
-    protected float x = 0, y = 1;//koordinaatit 2D
 
-    public void move(float xMove, float yMove) {
-        this.x += xMove;
-        this.y += yMove;
     }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    protected float speed = 2.5f;
-    protected Vector3f direction = new Vector3f(0, 0, 0);
-    protected Model model;
-        
-    public void setDirection(Vector3f newDirection) {
-        this.direction = newDirection;
-    }
-    
-    
 
     public void update(double deltaTime) {
 
-        Vector3f dDir = new Vector3f();
-        direction.mul(((float) deltaTime * speed), dDir);
+        if (glfwGetKey(id, GLFW_KEY_UP) == GLFW_PRESS) {
+            game.getPlayerBat().move(-2.f * (float) deltaTime, 0);
+        }
 
-        move(dDir.x, dDir.z);
+        if (glfwGetKey(id, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            game.getPlayerBat().move(2.f * (float) deltaTime, 0);
+        }
 
     }
 

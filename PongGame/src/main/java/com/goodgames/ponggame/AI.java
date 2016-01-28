@@ -23,58 +23,29 @@
  */
 package com.goodgames.ponggame;
 
-import java.nio.DoubleBuffer;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.lwjgl.BufferUtils;
-import static org.lwjgl.glfw.GLFW.*;
+import com.goodgames.ponggame.gameobjects.Bat;
 
 /**
  *
  * @author lahtelat
  */
-public class MouseInput {
+public class AI {
 
-    private long windowId;
+    private Difficulty difficulty;
 
-    //private Quaternionf rotate = new Qu aternionf();
-    private double lastX, lastY;
-
-    public MouseInput(long windowId) {
-        this.windowId = windowId;
-
-        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
-        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
-
-        glfwGetCursorPos(windowId, xPos, yPos);
-        lastX = xPos.get();
-        lastY = yPos.get();
-
-    }
-    
-    /*
-        mouseinput luokka: hiiren painallukset ja liikutukset
-    */
-
-    public MouseInput() {
+    public AI(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public void update(double deltaTime) {
-        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
-        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
-
-        glfwGetCursorPos(windowId, xPos, yPos);
-        double x = xPos.get();
-        double y = yPos.get();
-
-        double dX = lastX - x;
-        double dY = lastY - y;
-
-        //System.out.println("dx dy " + dX + " " + dY);
-        lastX = x;
-        lastY = y;
-
-        //TODO: kameran rotaatio hiirellä
+    public void update(double deltaTime, Bat ourBat, Game game) {
+        
     }
+
+    public enum Difficulty {
+
+        EASY,
+        HARD,
+        IMPOSSIBLE
+    };
 
 }

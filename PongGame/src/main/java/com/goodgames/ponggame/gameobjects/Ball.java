@@ -23,8 +23,9 @@
  */
 package com.goodgames.ponggame.gameobjects;
 
+import com.goodgames.ponggame.rendering.Model;
 import com.goodgames.ponggame.Game;
-import com.goodgames.ponggame.Shader;
+import com.goodgames.ponggame.rendering.Shader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import org.joml.Matrix4f;
@@ -70,11 +71,15 @@ public class Ball extends GameObject {
 
     private float[] verts;
 
+    private int collisionTime = 0;
+
+
     public Ball(Game game) {
         super(game);
-        currentShader = new Shader("test2");
+        //currentShader = new Shader("test2");
         generateBallVerts();
-        generateBuffers();
+        //generateBuffers();
+        model = new Model(verts, "test2");
 
     }
 
@@ -83,14 +88,29 @@ public class Ball extends GameObject {
         super.update(deltaTime);
 
         /*
-          törmäykset( atm hardcoded ja seinät on näkymättömät )
+         törmäykset( atm hardcoded ja seinät on näkymättömät )
          */
-        if (y > 2.75 || y < -1.75) {
-            this.direction.z = this.direction.z * -1;
-        }
-        if (x > 2 || x < -2) {
+        //System.out.println("ball y " + y);
+        float batX1 = game.getPlayerBat().getX();
+        float batX2 = game.getEnemyBat().getX();
+        if (collisionTime == 0) {
+            if (y > 2.75 || y < -1.75) {
+                if (y > 2.75 && batX1 < x + 0.75 && batX1 > x - 0.75 || y < -1.75 && batX2 < x + 0.75 && batX2 > x - 0.75f) //if( y < batZ  +2 && y >  batZ-2 ) {
+                {
+                    this.speed += 0.05f;
+                    this.direction.z = this.direction.z * -1;
+                    collisionTime = 5;
+                }
+            }
+            if (x > 1.75 || x < -1.75) {
 
-            this.direction.x = this.direction.x * -1;
+                this.speed += 0.05f;
+                this.direction.x = this.direction.x * -1;
+
+                collisionTime = 5;
+            }
+        } else {
+            collisionTime--;
         }
     }
 
@@ -113,82 +133,18 @@ public class Ball extends GameObject {
         }
     }
 
-    private void generateBuffers() {
-
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(verts.length);
-        buffer.put(verts);
-        buffer.flip();
-
-        vertAmount = verts.length / 3; //1 vertex=3 kolmiota
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        vertBuffer = GL15.glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
-        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        GL30.glBindVertexArray(0);
-    }
-
     public void render() {
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
-        glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-
-        GL20.glEnableVertexAttribArray(0);
-
-        glUseProgram(currentShader.getShaderId());
-
-        int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
-
         FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model matrix TODO: perspektiivi ja projektio
 
-        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(0.2f, 0.2f, 0.2f);
+        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(0.1f, 0.1f, 0.1f);
 
         Matrix4f vpm = game.getCamera().getViewProjectionMatrix();
         Matrix4f mvp = new Matrix4f();
         vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
         mvp.get(matrix4x4);
-        glUniformMatrix4fv(mvpMatrixId, false, matrix4x4);
 
-        glDrawArrays(GL11.GL_LINE_LOOP, 0, vertAmount);
-
-        glUseProgram(0);
-    }
-
-    public void renderOld() {
-
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
-        glUseProgram(currentShader.getShaderId());
-        glEnableVertexAttribArray(0);
-        int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
-
-        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model matrix TODO: perspektiivi ja projektio
-
-        Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(2, 0.5f, 0.1f);
-
-        Matrix4f vpm = game.getCamera().getViewProjectionMatrix();
-        Matrix4f mvp = new Matrix4f();
-        vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
-        mvp.get(matrix4x4);
-        glUniformMatrix4fv(mvpMatrixId, false, matrix4x4);
-
-        FloatBuffer back = BufferUtils.createFloatBuffer(verts.length);
-        GL15.glGetBufferSubData(GL_ARRAY_BUFFER, 0, back);
-
-        while (back.hasRemaining()) {
-            System.out.println(back.get());
-        }
-
-        glDrawArrays(GL11.GL_TRIANGLES, 0, vertAmount);
-        glDisableVertexAttribArray(0);
-        glUseProgram(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        model.render(matrix4x4, GL11.GL_LINE_LOOP);
     }
 
 }

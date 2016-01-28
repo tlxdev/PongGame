@@ -21,55 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.goodgames.ponggame.gameobjects;
+package com.goodgames.ponggame.input;
 
-import com.goodgames.ponggame.rendering.Model;
-import com.goodgames.ponggame.Game;
-import org.joml.Vector3f;
+import java.nio.DoubleBuffer;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.lwjgl.BufferUtils;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  *
  * @author lahtelat
  */
-public class GameObject {
+public class MouseInput {
 
-    protected Game game;
+    private long windowId;
 
-    public GameObject(Game game) {
-        this.game = game;
-    }
-    protected float x = 0, y = 1;//koordinaatit 2D
+    //private Quaternionf rotate = new Qu aternionf();
+    private double lastX, lastY;
 
-    public void move(float xMove, float yMove) {
-        this.x += xMove;
-        this.y += yMove;
-    }
+    public MouseInput(long windowId) {
+        this.windowId = windowId;
 
-    public float getY() {
-        return y;
-    }
+        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
 
-    public float getX() {
-        return x;
-    }
+        glfwGetCursorPos(windowId, xPos, yPos);
+        lastX = xPos.get();
+        lastY = yPos.get();
 
-    protected float speed = 2.5f;
-    protected Vector3f direction = new Vector3f(0, 0, 0);
-    protected Model model;
-        
-    public void setDirection(Vector3f newDirection) {
-        this.direction = newDirection;
     }
     
-    
+    /*
+        mouseinput luokka: hiiren painallukset ja liikutukset
+    */
+
+    public MouseInput() {
+    }
 
     public void update(double deltaTime) {
+        DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
 
-        Vector3f dDir = new Vector3f();
-        direction.mul(((float) deltaTime * speed), dDir);
+        glfwGetCursorPos(windowId, xPos, yPos);
+        double x = xPos.get();
+        double y = yPos.get();
 
-        move(dDir.x, dDir.z);
+        double dX = lastX - x;
+        double dY = lastY - y;
 
+        //System.out.println("dx dy " + dX + " " + dY);
+        lastX = x;
+        lastY = y;
+
+        
+        
+        //TODO: kameran rotaatio hiirellä
     }
 
 }
