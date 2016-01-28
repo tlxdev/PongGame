@@ -38,7 +38,7 @@ public class GameObject {
     public GameObject(Game game) {
         this.game = game;
     }
-    protected float x = 0, y = 1;//koordinaatit 2D
+    protected float x = 0, y = 0;//koordinaatit 2D
 
     public void move(float xMove, float yMove) {
         this.x += xMove;
@@ -60,7 +60,14 @@ public class GameObject {
     public void setDirection(Vector3f newDirection) {
         this.direction = newDirection;
     }
+   
+    public float getSpeed(){
+        return speed;
+    }
     
+    public void setSpeed(float speed){
+        this.speed = speed;
+    }
     
 
     public void update(double deltaTime) {

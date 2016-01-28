@@ -36,12 +36,31 @@ import static org.lwjgl.system.MemoryUtil.*;
  */
 public class GameWindow implements Runnable {
 
-    private long windowId;
+    private long windowId = -1;
     private Game game;
 
     private double lastFrameTime;//fps laskentaan
 
     private GLFWKeyCallback keyCallback;
+
+    private boolean started = false;
+
+    public boolean hasStarted() {
+        return started;
+    }
+    
+    public long getWindowId(){
+        return windowId;
+    }
+    
+    public Game getGame(){
+        return game;
+    }
+
+    public void stop(){
+        this.started = false;
+        System.out.println("stop");
+    }
 
     public GameWindow() {
 
@@ -69,6 +88,7 @@ public class GameWindow implements Runnable {
 
         GL.createCapabilities();
 
+        started = true;
     }
 
     public void startGame() {
@@ -105,7 +125,7 @@ public class GameWindow implements Runnable {
 
         glEnable(GL_DEPTH_TEST); //jotta toisten esineiden takana olevia ei renderöidä
 
-        while (glfwWindowShouldClose(windowId) == GLFW_FALSE) {
+        while (glfwWindowShouldClose(windowId) == GLFW_FALSE && started) {
             double currentTime = glfwGetTime();
             render();
             double deltaTime = currentTime - lastFrameTime;
@@ -120,16 +140,16 @@ public class GameWindow implements Runnable {
     private void onKeyPress(int key, int action) { //TODO: kunnon luokka input hallinnalle
         /*if (action == GLFW_RELEASE) {
 
-            if (key == GLFW_KEY_UP) {
-                game.getPlayerBat().move(-0.1f, 0);
+         if (key == GLFW_KEY_UP) {
+         game.getPlayerBat().move(-0.1f, 0);
 
-            } else if (key == GLFW_KEY_DOWN) {
+         } else if (key == GLFW_KEY_DOWN) {
 
-                game.getPlayerBat().move(0.1f, 0);
+         game.getPlayerBat().move(0.1f, 0);
 
-            }
+         }
 
-        }*/
+         }*/
 
     }
 

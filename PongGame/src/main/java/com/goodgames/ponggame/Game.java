@@ -79,8 +79,8 @@ public class Game {
         wall2 = new Wall(this);
         wall1.move(2, 0);
         wall2.move(-2, 0);
-        player2.move(0, -3);
-        player1.move(0, 2);
+        player2.move(0, -2);
+        player1.move(0, 3);
 
         ball.setDirection(new Vector3f(0.5f, 0, 0.5f).normalize());
 
