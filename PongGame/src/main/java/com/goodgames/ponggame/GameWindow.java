@@ -45,8 +45,14 @@ public class GameWindow implements Runnable {
 
     private boolean started = false;
 
+    private boolean isTest = false;
+    
     public boolean hasStarted() {
         return started;
+    }
+    
+    public void setTest(){
+        isTest = true;
     }
     
     public long getWindowId(){
@@ -125,7 +131,7 @@ public class GameWindow implements Runnable {
 
         glEnable(GL_DEPTH_TEST); //jotta toisten esineiden takana olevia ei renderöidä
 
-        while (glfwWindowShouldClose(windowId) == GLFW_FALSE && started) {
+        while (glfwWindowShouldClose(windowId) == GLFW_FALSE && started && !isTest) {
             double currentTime = glfwGetTime();
             render();
             double deltaTime = currentTime - lastFrameTime;

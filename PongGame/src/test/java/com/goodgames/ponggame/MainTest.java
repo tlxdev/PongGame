@@ -44,14 +44,16 @@ public class MainTest {
 
     @Before
     public void setUp() {
-        Main.main(new String[]{"a"});
+        Main.main(new String[]{"test"});
 
     }
 
     @Test
     public void testMain() {
+        System.out.println("assertequalsbefore");
         assertEquals(Main.getGameWindow().hasStarted(), true);
 
+        System.out.println("assertEqualsAfter");
         Main.getGameWindow().stop();
     }
 

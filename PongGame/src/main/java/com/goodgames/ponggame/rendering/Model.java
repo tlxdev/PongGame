@@ -65,7 +65,7 @@ public class Model {
 
     public Model(float[] vertFloats, String shaderName) {
         verts = new Vertex[vertFloats.length / 3];
-        for (int i = 0; i < verts.length / 3; i++) {
+        for (int i = 0; i < verts.length; i++) {
             verts[i] = new Vertex(vertFloats[i], vertFloats[i + 1], vertFloats[i + 2]);
         }
 
@@ -77,19 +77,21 @@ public class Model {
     }
 
     public void calculateNormals() { //todo korjaa tämä
-        /*for (int i = 0; i < verts.length; i += 3) {
+        System.out.println("verts length " + verts.length);
 
-         Vector3f edge1 = verts[i + 1].getPosition().add(verts[i].getPosition().negate());
-         Vector3f edge2 = verts[i + 2].getPosition().add(verts[i].getPosition().negate());
+        for (int i = 0; i < verts.length;) {
 
-         Vector3f normal = edge1.cross(edge2).normalize();
-         /*
-         vertexejen normaali on sama kuin kolmion normaali
-         */
-        /*  verts[i].setNormal(normal);
-         verts[i + 1].setNormal(normal);
-         verts[i + 2].setNormal(normal);
-         }*/
+            Vector3f edge1 = verts[i + 1].getPosition().add(verts[i].getPosition().negate());
+            Vector3f edge2 = verts[i + 2].getPosition().add(verts[i].getPosition().negate());
+
+            Vector3f normal = edge1.cross(edge2).normalize();
+            /*vertexejen normaali on sama kuin kolmion normaali*/
+            verts[i].setNormal(normal);
+            verts[i + 1].setNormal(normal);
+            verts[i + 2].setNormal(normal);
+
+            i += 3;
+        }
 
     }
 
