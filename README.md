@@ -3,5 +3,5 @@ Pong-klooni. Klassikkopeli, jossa pyritään lyömään palloa mailalla ja voitt
 
 
 # Dokumentaatio
-[Aiheen kuvaus](dokumentointi/aiheenkuvausJaMääritelmä.md)
+[Aiheen kuvaus](dokumentointi/aiheenkuvausJaRakenne.md)
 [Tuntikirjanpito](dokumentointi/tuntikirjanpito.md)
