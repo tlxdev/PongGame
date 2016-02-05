@@ -59,17 +59,36 @@ public class Model {
     int vertAmount;
     int vertBuffer;
 
+    int normalBuffer;
+
     Shader currentShader;
 
     Vector3f[] triangleNormals;
 
     public Model(float[] vertFloats, String shaderName) {
+        this(vertFloats, shaderName, true);
+        /*    verts = new Vertex[vertFloats.length / 3];
+         for (int i = 0; i < verts.length; i++) {
+         verts[i] = new Vertex(vertFloats[i], vertFloats[i + 1], vertFloats[i + 2]);
+         }
+
+         calculateNormals();
+
+         generateBuffers(vertFloats);
+
+         currentShader = new Shader(shaderName);*/
+    }
+
+    public Model(float[] vertFloats, String shaderName, boolean calcNormals) {
+
         verts = new Vertex[vertFloats.length / 3];
         for (int i = 0; i < verts.length; i++) {
-            verts[i] = new Vertex(vertFloats[i], vertFloats[i + 1], vertFloats[i + 2]);
+            verts[i] = new Vertex(vertFloats[3 * i], vertFloats[(3 * i) + 1], vertFloats[(3 * i) + 2]);
         }
 
-        calculateNormals();
+        if (calcNormals) {
+            calculateNormals();
+        }
 
         generateBuffers(vertFloats);
 
@@ -78,21 +97,53 @@ public class Model {
 
     public void calculateNormals() { //todo korjaa tämä
         System.out.println("verts length " + verts.length);
+        normals = new float[verts.length * 3];
+        for (int i = 0; i < verts.length; i += 3) {
 
-        for (int i = 0; i < verts.length;) {
+            Vector3f vertPosNeg = verts[i].getPosition().mul(-1);
 
-            Vector3f edge1 = verts[i + 1].getPosition().add(verts[i].getPosition().negate());
-            Vector3f edge2 = verts[i + 2].getPosition().add(verts[i].getPosition().negate());
+            Vector3f edge1 = verts[i + 1].getPosition().add(vertPosNeg);
+            Vector3f edge2 = verts[i + 2].getPosition().add(vertPosNeg);
 
             Vector3f normal = edge1.cross(edge2).normalize();
-            /*vertexejen normaali on sama kuin kolmion normaali*/
+
+            /*
+             vaikea selittää.. mutta siis normals on käytännössä array, n=x n+1=y n+2 = z, joka n= yksi vertex yms, yhdessä kolmiossa 3 vertex
+            todo: refaktoroi alemmat rivit
+             */
+            normals[3 * i] = normal.x;
+            normals[(3 * i) + 1] = normal.y;
+            normals[(3 * i) + 2] = normal.z;
+
+            normals[3 * (i + 1)] = normal.x;
+            normals[(3 * (i + 1)) + 1] = normal.y;
+            normals[(3 * (i + 1)) + 2] = normal.z;
+
+            normals[3 * (i + 2)] = normal.x;
+            normals[(3 * (i + 2)) + 1] = normal.y;
+            normals[(3 * (i + 2)) + 2] = normal.z;
             verts[i].setNormal(normal);
             verts[i + 1].setNormal(normal);
             verts[i + 2].setNormal(normal);
-
-            i += 3;
+            /*vertexejen normaali on sama kuin kolmion normaali*/
         }
 
+        generateNormalBuffers();
+
+    }
+
+    private void generateNormalBuffers() {
+
+        normalBuffer = GL15.glGenBuffers();
+
+        glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+
+        //glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3),  & normals[0], GL_STATIC_DRAW);
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(normals.length);
+        buffer.put(normals);
+        buffer.flip();
+        //vertAmount = vertFloats.length / 3; //1 vertex=3 kolmiota
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
     }
 
     private void generateBuffers(float[] vertFloats) {
@@ -118,15 +169,31 @@ public class Model {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+
         glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
         glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
 
-        GL20.glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+        glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
 
         glUseProgram(currentShader.getShaderId());
 
         int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
 
+        
+        int m = glGetUniformLocation(currentShader.getShaderId(), "m");
+        int v = glGetUniformLocation(currentShader.getShaderId(), "v");
+        int p = glGetUniformLocation(currentShader.getShaderId(), "p");
+        
+        int cameraPos = glGetUniformLocation(currentShader.getShaderId(), "lightPos");
+        int lightPos = glGetUniformLocation(currentShader.getShaderId(), "cameraPos");
+
+        
+        //glUniformMatrix4fv(m, false, matrix4x4);
+
+        
         glUniformMatrix4fv(mvpMatrixId, false, matrix4x4);
 
         glDrawArrays(GL11.GL_TRIANGLES, 0, vertAmount);
@@ -171,6 +238,11 @@ public class Model {
 
         public void setNormal(Vector3f norm) {
             this.normal = norm;
+        }
+
+        @Override
+        public String toString() {
+            return pos.toString();
         }
 
     }

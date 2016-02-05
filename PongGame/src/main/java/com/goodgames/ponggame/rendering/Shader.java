@@ -96,6 +96,7 @@ public class Shader {
         
         
         glBindAttribLocation(getShaderId(), 0, "position");
+        glBindAttribLocation(getShaderId(), 1, "normal");
 
         glLinkProgram(shaderId);
         String infoLog = GL20.glGetProgramInfoLog(shaderId);

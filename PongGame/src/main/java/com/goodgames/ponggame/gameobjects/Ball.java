@@ -79,7 +79,7 @@ public class Ball extends GameObject {
         //currentShader = new Shader("test2");
         generateBallVerts();
         //generateBuffers();
-        model = new Model(verts, "test2");
+        model = new Model(verts, "test2", false);
 
     }
 
@@ -107,7 +107,7 @@ public class Ball extends GameObject {
                 this.speed += 0.05f;
                 this.direction.x = this.direction.x * -1;
 
-                collisionTime = 5;
+                collisionTime = 10;
             }
         } else {
             collisionTime--;
