@@ -97,7 +97,7 @@ public class Wall extends GameObject {
 
     public Wall(Game game) {
         super(game);
-        model = new Model(verts, "test");
+        model = new Model(verts, "lighting");
 
     }
 
@@ -111,7 +111,31 @@ public class Wall extends GameObject {
         Matrix4f mvp = new Matrix4f();
         vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
         mvp.get(matrix4x4);
-        model.render(matrix4x4);
+
+        FloatBuffer camera = BufferUtils.createFloatBuffer(3);
+        camera.put(game.getCamera().getPosition().x);
+        camera.put(game.getCamera().getPosition().y);
+        camera.put(game.getCamera().getPosition().z);
+        camera.flip();
+
+        FloatBuffer ball = BufferUtils.createFloatBuffer(3);
+        ball.put(game.getBall().getX());
+        ball.put(0);
+        ball.put(game.getBall().getY());
+        ball.flip();
+
+        Matrix4f viewMatrixM = game.getCamera().getViewMatrix();
+        Matrix4f projectionMatrixM = game.getCamera().getProjectionMatrix();
+
+        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        viewMatrixM.get(viewMatrix);
+        FloatBuffer projectionMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        projectionMatrixM.get(projectionMatrix);
+
+        FloatBuffer modMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        modelMatrix.get(modMatrix);
+
+        model.render(matrix4x4, modMatrix, viewMatrix, projectionMatrix, camera, ball);
 
     }
 }

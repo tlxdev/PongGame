@@ -82,7 +82,7 @@ public class Shader {
         }
 
         if (GL20.glGetShaderi(fragId, GL_COMPILE_STATUS) == GL_FALSE) {
-            String infoLog = GL20.glGetShaderInfoLog(vertId);
+            String infoLog = GL20.glGetShaderInfoLog(fragId);
             System.out.println("failed to copmile fragment shader " + infoLog);
         }
 

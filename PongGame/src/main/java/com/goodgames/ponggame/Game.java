@@ -67,6 +67,10 @@ public class Game {
     public Camera getCamera() {
         return camera;
     }
+    
+    public Ball getBall(){
+        return ball;
+    }
 
     private Ball ball;
 

@@ -109,7 +109,7 @@ public class Model {
 
             /*
              vaikea selittää.. mutta siis normals on käytännössä array, n=x n+1=y n+2 = z, joka n= yksi vertex yms, yhdessä kolmiossa 3 vertex
-            todo: refaktoroi alemmat rivit
+             todo: refaktoroi alemmat rivit
              */
             normals[3 * i] = normal.x;
             normals[(3 * i) + 1] = normal.y;
@@ -165,7 +165,7 @@ public class Model {
         GL30.glBindVertexArray(0);
     }
 
-    public void render(FloatBuffer matrix4x4) {
+    public void render(FloatBuffer matrix4x4, FloatBuffer m, FloatBuffer v, FloatBuffer p, FloatBuffer camera, FloatBuffer light) {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -182,19 +182,24 @@ public class Model {
 
         int mvpMatrixId = glGetUniformLocation(currentShader.getShaderId(), "mvp");
 
-        
-        int m = glGetUniformLocation(currentShader.getShaderId(), "m");
-        int v = glGetUniformLocation(currentShader.getShaderId(), "v");
-        int p = glGetUniformLocation(currentShader.getShaderId(), "p");
-        
-        int cameraPos = glGetUniformLocation(currentShader.getShaderId(), "lightPos");
-        int lightPos = glGetUniformLocation(currentShader.getShaderId(), "cameraPos");
+        int mLoc = glGetUniformLocation(currentShader.getShaderId(), "m");
+        int vLoc = glGetUniformLocation(currentShader.getShaderId(), "v");
+        int pLoc = glGetUniformLocation(currentShader.getShaderId(), "p");
 
-        
+        int cameraPos = glGetUniformLocation(currentShader.getShaderId(), "cameraPos");
+        int lightPos = glGetUniformLocation(currentShader.getShaderId(), "lightPos");
+
         //glUniformMatrix4fv(m, false, matrix4x4);
-
-        
         glUniformMatrix4fv(mvpMatrixId, false, matrix4x4);
+
+        glUniformMatrix4fv(mLoc, false, m);
+        glUniformMatrix4fv(vLoc, false, v);
+        glUniformMatrix4fv(pLoc, false, p);
+        
+        System.out.println("lightpos " + lightPos + " cameraPos " + cameraPos);
+
+        GL20.glUniform3fv(cameraPos, camera);
+        GL20.glUniform3fv(lightPos, light);
 
         glDrawArrays(GL11.GL_TRIANGLES, 0, vertAmount);
 
