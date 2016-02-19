@@ -95,7 +95,7 @@ public class Model {
         currentShader = new Shader(shaderName);
     }
 
-    public void calculateNormals() { //todo korjaa tämä
+    private void calculateNormals() { //todo korjaa tämä
         System.out.println("verts length " + verts.length);
         normals = new float[verts.length * 3];
         for (int i = 0; i < verts.length; i += 3) {
@@ -165,6 +165,16 @@ public class Model {
         GL30.glBindVertexArray(0);
     }
 
+    /**
+     * Renders the model
+     *
+     * @param matrix4x4 mvp matrix
+     * @param m model matrix
+     * @param v view matrix
+     * @param p projection matrix
+     * @param camera camera position
+     * @param light light position
+     */
     public void render(FloatBuffer matrix4x4, FloatBuffer m, FloatBuffer v, FloatBuffer p, FloatBuffer camera, FloatBuffer light) {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -195,8 +205,6 @@ public class Model {
         glUniformMatrix4fv(mLoc, false, m);
         glUniformMatrix4fv(vLoc, false, v);
         glUniformMatrix4fv(pLoc, false, p);
-        
-        System.out.println("lightpos " + lightPos + " cameraPos " + cameraPos);
 
         GL20.glUniform3fv(cameraPos, camera);
         GL20.glUniform3fv(lightPos, light);
@@ -207,6 +215,12 @@ public class Model {
 
     }
 
+    /**
+     * Renders the model using given render type(eg. GL_TRIANGLES, GL_LINES)
+     *
+     * @param matrix4x4 mvp matrix
+     * @param rendeType render type
+     */
     public void render(FloatBuffer matrix4x4, int renderType) {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);

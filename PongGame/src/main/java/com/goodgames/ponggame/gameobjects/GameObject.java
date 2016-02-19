@@ -31,7 +31,7 @@ import org.joml.Vector3f;
  *
  * @author lahtelat
  */
-public class GameObject {
+public abstract class GameObject {
 
     protected Game game;
 
@@ -40,6 +40,14 @@ public class GameObject {
     }
     protected float x = 0, y = 0;//koordinaatit 2D
 
+    
+    /**
+     * Moves the object. NOTE: The coordinate system used here is 2D from top down; eg x left right y up down. It is different
+     * from the coordinate system used by OpenGL(x left right, y up down, z forwards backwards);
+     * @param xMove the amount moved in x
+     * @param yMove the amount moevd in y
+    */
+    
     public void move(float xMove, float yMove) {
         this.x += xMove;
         this.y += yMove;
@@ -56,6 +64,12 @@ public class GameObject {
     protected float speed = 2.5f;
     protected Vector3f direction = new Vector3f(0, 0, 0);
     protected Model model;
+    
+    
+    /**
+     * Set the direction the object is going in.
+     * @param newDirection the new direction of the object
+    */
         
     public void setDirection(Vector3f newDirection) {
         this.direction = newDirection;
@@ -68,6 +82,20 @@ public class GameObject {
     public void setSpeed(float speed){
         this.speed = speed;
     }
+    
+    
+    /**
+     * Renders this object. Called every frame. Should only be used by Game
+     * 
+    */
+    public abstract void render();
+    
+    
+    
+    /**
+     * Updates the object, called every frame. Should only be used by Game#update(), please do not touch.
+     * @param deltaTime the amount of time between framse
+    */
     
 
     public void update(double deltaTime) {

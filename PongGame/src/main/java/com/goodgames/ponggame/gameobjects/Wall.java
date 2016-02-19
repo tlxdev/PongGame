@@ -46,9 +46,8 @@ import static org.lwjgl.opengl.GL20.*;
  */
 public class Wall extends GameObject {
 
-    Shader currentShader;
-
-    float[] verts = { //mailan renderöinti: kuutio, jota scaletetaan leveysakselilla
+    
+    private float[] verts = { //mailan renderöinti: kuutio, jota scaletetaan leveysakselilla
         //koska 3d-model formaatin tekeminen menisi jo liian pitkälle, käytetään
         //hardcoded koordinaatteja kuutioon
 
@@ -101,6 +100,7 @@ public class Wall extends GameObject {
 
     }
 
+    @Override
     public void render() {
 
         FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi

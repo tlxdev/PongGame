@@ -23,6 +23,7 @@
  */
 package com.goodgames.ponggame.input;
 
+import com.goodgames.ponggame.Game;
 import java.nio.DoubleBuffer;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -40,8 +41,11 @@ public class MouseInput {
     //private Quaternionf rotate = new Qu aternionf();
     private double lastX, lastY;
 
-    public MouseInput(long windowId) {
+    private Game game;
+
+    public MouseInput(long windowId, Game game) {
         this.windowId = windowId;
+        this.game = game;
 
         DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
@@ -51,14 +55,18 @@ public class MouseInput {
         lastY = yPos.get();
 
     }
-    
-    /*
-        mouseinput luokka: hiiren painallukset ja liikutukset
-    */
 
+    /*
+     mouseinput luokka: hiiren painallukset ja liikutukset
+     */
     public MouseInput() {
     }
 
+    /**
+     * Updates mouse input called every frame
+     *
+     * @param deltaTime amount of time between frames
+     */
     public void update(double deltaTime) {
         DoubleBuffer xPos = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yPos = BufferUtils.createDoubleBuffer(1);
@@ -69,13 +77,13 @@ public class MouseInput {
 
         double dX = lastX - x;
         double dY = lastY - y;
-
+        if (dX != 0 || dY != 0) {
+            game.getCamera().rotate(dX, dY);
+        }
         //System.out.println("dx dy " + dX + " " + dY);
         lastX = x;
         lastY = y;
 
-        
-        
         //TODO: kameran rotaatio hiirellä
     }
 

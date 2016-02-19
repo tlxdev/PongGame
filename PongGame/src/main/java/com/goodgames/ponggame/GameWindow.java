@@ -23,6 +23,8 @@
  */
 package com.goodgames.ponggame;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
@@ -46,24 +48,24 @@ public class GameWindow implements Runnable {
     private boolean started = false;
 
     private boolean isTest = false;
-    
+
     public boolean hasStarted() {
         return started;
     }
-    
-    public void setTest(){
+
+    public void setTest() {
         isTest = true;
     }
-    
-    public long getWindowId(){
+
+    public long getWindowId() {
         return windowId;
     }
-    
-    public Game getGame(){
+
+    public Game getGame() {
         return game;
     }
 
-    public void stop(){
+    public void stop() {
         this.started = false;
         System.out.println("stop");
     }
@@ -85,9 +87,10 @@ public class GameWindow implements Runnable {
         glfwSwapInterval(1);
 
         glfwSetKeyCallback(windowId, keyCallback = new GLFWKeyCallback() {
+
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                onKeyPress(key, action);
+                game.getKeyboardInput().onInput(key, action, mods);
 
             }
         });
@@ -97,6 +100,10 @@ public class GameWindow implements Runnable {
         started = true;
     }
 
+    /**
+     * Starts a new game.
+     *
+     */
     public void startGame() {
 
         game = new Game();
@@ -107,7 +114,7 @@ public class GameWindow implements Runnable {
 
     }
 
-    public void render() {
+    private void render() {
         glClearColor(0.0f, 0.5f, 0.5f, 1.0f);//aseta clearcolor rgb 1,1,1(valkoinen)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //tyhjennä puskurit
         game.render();
@@ -132,30 +139,27 @@ public class GameWindow implements Runnable {
         glEnable(GL_DEPTH_TEST); //jotta toisten esineiden takana olevia ei renderöidä
 
         while (glfwWindowShouldClose(windowId) == GLFW_FALSE && started && !isTest) {
-            double currentTime = glfwGetTime();
-            render();
-            double deltaTime = currentTime - lastFrameTime;
-            lastFrameTime = currentTime;
+            if (!game.isPaused()) {
+                double currentTime = glfwGetTime();
+                render();
+                double deltaTime = currentTime - lastFrameTime;
+                lastFrameTime = currentTime;
 
-            update(deltaTime);
+                update(deltaTime);
+            } else {
+                try {
+
+                    double currentTime = glfwGetTime();
+                    lastFrameTime = currentTime;
+
+                    input();
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
 
         }
-
-    }
-
-    private void onKeyPress(int key, int action) { //TODO: kunnon luokka input hallinnalle
-        /*if (action == GLFW_RELEASE) {
-
-         if (key == GLFW_KEY_UP) {
-         game.getPlayerBat().move(-0.1f, 0);
-
-         } else if (key == GLFW_KEY_DOWN) {
-
-         game.getPlayerBat().move(0.1f, 0);
-
-         }
-
-         }*/
 
     }
 

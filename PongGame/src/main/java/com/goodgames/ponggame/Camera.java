@@ -59,6 +59,29 @@ public class Camera {
 
     public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
+
+    }
+
+    private float rotX, rotY;
+
+    /**
+     *
+     * rotates the camera with given deltaX, deltaY mouse deltas
+     *
+     * @param deltaX mouse x change
+     * @param deltaY mouse y change
+     */
+    public void rotate(double deltaX, double deltaY) {
+        rotX += deltaX * 0.015f;
+        rotY += deltaY * 0.015f;
+        double camX = 5 * Math.cos(rotX) * Math.sin(rotY);
+        double camY = 5 * Math.cos(rotY);
+        double camZ = 5 * Math.sin(rotX) * Math.sin(rotY);
+
+        cameraPos = new Vector3f((float) camX, (float) camY, (float) camZ);
+
+        viewMatrix = new Matrix4f().lookAt(cameraPos, new Vector3f(0, 0, 0), up);//1
+
     }
 
     public Matrix4f getViewProjectionMatrix() {

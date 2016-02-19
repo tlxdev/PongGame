@@ -53,6 +53,14 @@ public class Shader {
         return shaderId;
     }
 
+    private void checkShaderStatus(int id, String type) {
+
+        if (GL20.glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
+            String infoLog = GL20.glGetShaderInfoLog(id);
+            System.out.println("failed to compile " + type + " shader error: \n" + infoLog);
+        }
+    }
+
     private void makeShader(String shaderName) {
 
         /*
@@ -76,25 +84,16 @@ public class Shader {
         glShaderSource(fragId, frag);
         glCompileShader(fragId);
 
-        if (GL20.glGetShaderi(vertId, GL_COMPILE_STATUS) == GL_FALSE) {
-            String infoLog = GL20.glGetShaderInfoLog(vertId);
-            System.out.println("failed to copmile vertex shader " + infoLog);
-        }
-
-        if (GL20.glGetShaderi(fragId, GL_COMPILE_STATUS) == GL_FALSE) {
-            String infoLog = GL20.glGetShaderInfoLog(fragId);
-            System.out.println("failed to copmile fragment shader " + infoLog);
-        }
+        checkShaderStatus(vertId, "vertex");
+        checkShaderStatus(fragId, "fragment");
 
         shaderId = glCreateProgram();
         glAttachShader(shaderId, vertId);
         glAttachShader(shaderId, fragId);
 
         /*
-            attribuutti 0 tällä hetkellä shadereissa aina position
-        */
-        
-        
+         attribuutti 0 tällä hetkellä shadereissa aina position
+         */
         glBindAttribLocation(getShaderId(), 0, "position");
         glBindAttribLocation(getShaderId(), 1, "normal");
 

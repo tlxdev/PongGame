@@ -23,7 +23,9 @@
  */
 package com.goodgames.ponggame;
 
+import com.goodgames.ponggame.gameobjects.Ball;
 import com.goodgames.ponggame.gameobjects.Bat;
+import org.joml.Vector3f;
 
 /**
  *
@@ -33,12 +35,58 @@ public class AI {
 
     private Difficulty difficulty;
 
-    public AI(Difficulty difficulty) {
+    private Bat ourBat;
+    private Ball ball;
+
+    public AI(Difficulty difficulty, Game game, Bat ourbat) {
         this.difficulty = difficulty;
+        this.ball = game.getBall();
+        this.ourBat = ourbat;
+        setupDifficulty(difficulty);
     }
 
-    public void update(double deltaTime, Bat ourBat, Game game) {
-        
+    private void setupDifficulty(Difficulty t) {
+        switch (t) {
+            case EASY:
+                
+                System.out.println("easy");
+
+                ourBat.setSpeed(1);
+                break;
+            case HARD:
+
+                ourBat.setSpeed(2);
+                break;
+            case IMPOSSIBLE:
+
+                ourBat.setSpeed(5);
+                break;
+        }
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+
+    
+    }
+    
+    public Difficulty getDifficulty(){
+        return this.difficulty;
+    }
+
+    public void update(double deltaTime) {
+
+        System.out.println("ball y bat y");
+        System.out.println(ball.getY());
+        System.out.println(ourBat.getY());
+
+        if (ball.getX() > ourBat.getX()) {
+            ourBat.setDirection(new Vector3f(1, 0, 0));
+        } else {
+
+            ourBat.setDirection(new Vector3f(-1, 0, 0));
+        }
+
     }
 
     public enum Difficulty {

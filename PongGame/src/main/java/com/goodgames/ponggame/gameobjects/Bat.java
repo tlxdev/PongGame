@@ -46,7 +46,7 @@ import static org.lwjgl.opengl.GL20.*;
  */
 public class Bat extends GameObject {
 
-    float[] verts2 = { //2d neliö
+    private float[] verts2 = { //2d neliö
         -0.5f, 0.5f, 0f,
         -0.5f, -0.5f, 0f,
         0.5f, -0.5f, 0f,
@@ -55,9 +55,7 @@ public class Bat extends GameObject {
         -0.5f, 0.5f, 0f
     };
 
-    Shader currentShader;
-
-    float[] verts = { //mailan renderöinti: kuutio, jota scaletetaan leveysakselilla
+    private float[] verts = { //mailan renderöinti: kuutio, jota scaletetaan leveysakselilla
         //koska 3d-model formaatin tekeminen menisi jo liian pitkälle, käytetään
         //hardcoded koordinaatteja kuutioon
 
@@ -102,8 +100,7 @@ public class Bat extends GameObject {
 
     int vertBuffer;
 
-    int vertAmount;
-
+  
     public Bat(Game game) {
         super(game);
         model = new Model(verts, "lighting");
@@ -112,6 +109,7 @@ public class Bat extends GameObject {
 
     }
 
+    @Override
     public void render() {
         FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi
 

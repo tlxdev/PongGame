@@ -73,12 +73,9 @@ public class Ball extends GameObject {
 
     private int collisionTime = 0;
 
-
     public Ball(Game game) {
         super(game);
-        //currentShader = new Shader("test2");
         generateBallVerts();
-        //generateBuffers();
         model = new Model(verts, "test2", false);
 
     }
@@ -114,10 +111,7 @@ public class Ball extends GameObject {
         }
     }
 
-    /*
-     generoi 3d pisteet pallosta. kaava otettu: http://stackoverflow.com/a/4082020
-     */
-    public void generateBallVerts() {
+    private void generateBallVerts() {
         ArrayList<Float> vertList = new ArrayList<>();
         for (float i = 0; i < 16; i++) {
             for (float ii = 0; ii < 15; ii++) {
@@ -133,6 +127,7 @@ public class Ball extends GameObject {
         }
     }
 
+    @Override
     public void render() {
 
         FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model matrix TODO: perspektiivi ja projektio

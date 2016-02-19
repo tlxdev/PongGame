@@ -41,6 +41,11 @@ public class KeyboardInput {
 
     }
 
+    /**
+     * Updates input called every frame
+     *
+     * @param deltaTime amount of time between frames
+     */
     public void update(double deltaTime) {
 
         if (glfwGetKey(id, GLFW_KEY_UP) == GLFW_PRESS) {
@@ -51,6 +56,19 @@ public class KeyboardInput {
             game.getPlayerBat().move(2.f * (float) deltaTime, 0);
         }
 
+    }
+
+    /**
+     * called by GameWindow.
+     *
+     * @param key key id
+     * @param action action id
+     * @param mods modifiers
+     */
+    public void onInput(int key, int action, int mods) {
+            if(key == GLFW_KEY_P && action == GLFW_RELEASE){
+                game.pause();
+            }
     }
 
 }

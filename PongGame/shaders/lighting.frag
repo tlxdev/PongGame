@@ -26,7 +26,7 @@ vec3 r = reflect(-l, n);
 
 float cosAlpha = clamp(dot(e, r), 0, 1);
 
-vec3 color = ambientColor + (matColor * lightCol * lightPower * cosTheta / (dist*dist));
+vec3 color = ambientColor + (matColor * lightCol * lightPower * cosTheta / (dist*(dist)));
 
 
 gl_FragColor = vec4(color, 1);

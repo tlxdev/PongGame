@@ -23,12 +23,13 @@
  */
 package com.goodgames.ponggame;
 
-import com.goodgames.ponggame.input.MouseInput;
-import com.goodgames.ponggame.input.KeyboardInput;
+import com.goodgames.ponggame.AI.Difficulty;
 import com.goodgames.ponggame.gameobjects.Ball;
 import com.goodgames.ponggame.gameobjects.Bat;
 import com.goodgames.ponggame.gameobjects.GameObject;
 import com.goodgames.ponggame.gameobjects.Wall;
+import com.goodgames.ponggame.input.KeyboardInput;
+import com.goodgames.ponggame.input.MouseInput;
 import java.util.ArrayList;
 import java.util.Random;
 import org.joml.Vector3f;
@@ -40,13 +41,13 @@ import org.lwjgl.glfw.GLFW;
  */
 public class Game {
 
-    ArrayList<GameObject> objects = new ArrayList<>();
+    private ArrayList<GameObject> objects = new ArrayList<>();
 
-    Bat player1, player2;
+    private Bat player1, player2;
 
-    Wall wall1, wall2;
+    private Wall wall1, wall2;
 
-    Camera camera;
+    private Camera camera;
 
     private MouseInput input;
 
@@ -56,10 +57,36 @@ public class Game {
 
     private long frameCounter = 0;
 
+    private boolean paused = false;
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void pause() {
+        this.paused = !this.paused;
+    }
+
+    private AI ai;
+
+    /**
+     * Returns the player's bat
+     *
+     * @return the player's bat
+     */
     public Bat getPlayerBat() {
         return player1;
     }
 
+    public KeyboardInput getKeyboardInput() {
+        return keyboardInput;
+    }
+
+    /**
+     * Returns the enemy's bat
+     *
+     * @return the enemy's bat
+     */
     public Bat getEnemyBat() {
         return player2;
     }
@@ -67,8 +94,8 @@ public class Game {
     public Camera getCamera() {
         return camera;
     }
-    
-    public Ball getBall(){
+
+    public Ball getBall() {
         return ball;
     }
 
@@ -88,8 +115,13 @@ public class Game {
 
         ball.setDirection(new Vector3f(0.5f, 0, 0.5f).normalize());
 
+        ai = new AI(Difficulty.EASY, this, player2);
     }
 
+    /**
+     * Renders the scene
+     *
+     */
     public void render() {
 
         //renderöi esineet
@@ -101,17 +133,28 @@ public class Game {
 
     }
 
-    /*
-    
-     Sovelluksen logiikka(mailojen ja pallon törmäys, pallon liikkuminen) tulee tähän
-    
+    /**
+     * Updates the game logic and checks for input
+     *
+     * @param deltaTime the amount of time passed between frames
      */
     public void update(double deltaTime) {
+
         ball.update(deltaTime);
 
+        player2.update(deltaTime);
         /*
          Päivitä fps vain joka viidestoista frame(muuten se on liian vaikea lukea)     
          */
+        if (ai.getDifficulty().equals(Difficulty.EASY)) {
+            ai.update(deltaTime);
+        } else if (frameCounter % 6 == 0) {
+            ai.update(deltaTime);
+
+        }//else{
+        // ai.update(deltaTime);
+        //}
+
         if (frameCounter == 15) {
             frameCounter = 0;
         }
@@ -129,15 +172,21 @@ public class Game {
             ball = new Ball(this);
 
             ball.setDirection(new Vector3f(Math.max(new Random().nextFloat(), 0.5f), 0, Math.max(new Random().nextFloat(), 0.5f)).normalize());
-
+            ai.setBall(ball);
         }
 
     }
 
+    /**
+     * Sets the window id, sets up input listeners for the window.
+     *
+     * @param id the id of the window
+     */
     public void setWindowId(long id) {
         this.windowId = id;
-        input = new MouseInput(id);
+        input = new MouseInput(id, this);
         keyboardInput = new KeyboardInput(id, this);
+
     }
 
 }
