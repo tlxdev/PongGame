@@ -38,13 +38,17 @@ import org.lwjgl.opengl.GL20;
 import static org.lwjgl.opengl.GL20.*;
 
 /**
- *
+ * A class for loading shaders.
  * @author lahtelat
  */
 public class Shader {
 
     private int shaderId = 0;
 
+    /**
+     * A new shader.
+     * @param shaderName the name of the shader(don't include .vert or .frag)
+     */
     public Shader(String shaderName) {
         makeShader(shaderName);
     }

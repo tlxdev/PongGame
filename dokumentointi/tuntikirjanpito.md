@@ -13,3 +13,5 @@
 28/1/16: Refaktorointia, ominaisuuksia yms. alkaa jo näyttämään peliltä. 2h
 
 5/2/16: Tutkimus, normaaleiden laskun korjaus yms: 3h
+
+19/2/16: AI, checkstyles, refaktoroitia: 4h

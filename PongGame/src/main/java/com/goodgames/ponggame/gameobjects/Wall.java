@@ -41,12 +41,11 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 
 /**
- *
+ * A wall.
  * @author lahtelat
  */
 public class Wall extends GameObject {
 
-    
     private float[] verts = { //mailan renderöinti: kuutio, jota scaletetaan leveysakselilla
         //koska 3d-model formaatin tekeminen menisi jo liian pitkälle, käytetään
         //hardcoded koordinaatteja kuutioon
@@ -94,6 +93,11 @@ public class Wall extends GameObject {
 
     int vertAmount;
 
+    /**
+     * A wall.
+     * @param game game instance
+     */
+
     public Wall(Game game) {
         super(game);
         model = new Model(verts, "lighting");
@@ -102,14 +106,13 @@ public class Wall extends GameObject {
 
     @Override
     public void render() {
-
-        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi
-
+        //model view projection matriisi
+        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);
         Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).rotate(1.5708f, 0, 1, 0).scale(10f, 0.2f, 0.05f);
 
         Matrix4f vpm = game.getCamera().getViewProjectionMatrix();
         Matrix4f mvp = new Matrix4f();
-        vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
+        vpm.mul(modelMatrix, mvp);
         mvp.get(matrix4x4);
 
         FloatBuffer camera = BufferUtils.createFloatBuffer(3);
@@ -127,15 +130,16 @@ public class Wall extends GameObject {
         Matrix4f viewMatrixM = game.getCamera().getViewMatrix();
         Matrix4f projectionMatrixM = game.getCamera().getProjectionMatrix();
 
-        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);
         viewMatrixM.get(viewMatrix);
-        FloatBuffer projectionMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer projectionMatrix = BufferUtils.createFloatBuffer(16);
         projectionMatrixM.get(projectionMatrix);
 
-        FloatBuffer modMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer modMatrix = BufferUtils.createFloatBuffer(16);
         modelMatrix.get(modMatrix);
 
         model.render(matrix4x4, modMatrix, viewMatrix, projectionMatrix, camera, ball);
 
     }
 }
+    

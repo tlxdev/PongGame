@@ -36,6 +36,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 /**
+ * Handles game logic, rendering etc.
  *
  * @author lahtelat
  */
@@ -63,6 +64,9 @@ public class Game {
         return paused;
     }
 
+    /**
+     * Pauses or unpauses the game.
+     */
     public void pause() {
         this.paused = !this.paused;
     }
@@ -70,7 +74,7 @@ public class Game {
     private AI ai;
 
     /**
-     * Returns the player's bat
+     * Returns the player's bat.
      *
      * @return the player's bat
      */
@@ -83,7 +87,7 @@ public class Game {
     }
 
     /**
-     * Returns the enemy's bat
+     * Returns the enemy's bat.
      *
      * @return the enemy's bat
      */
@@ -101,6 +105,9 @@ public class Game {
 
     private Ball ball;
 
+    /**
+     * Game instance.
+     */
     public Game() {
         camera = new Camera();
         ball = new Ball(this);
@@ -119,7 +126,7 @@ public class Game {
     }
 
     /**
-     * Renders the scene
+     * Renders the scene.
      *
      */
     public void render() {
@@ -134,7 +141,7 @@ public class Game {
     }
 
     /**
-     * Updates the game logic and checks for input
+     * Updates the game logic and checks for input.
      *
      * @param deltaTime the amount of time passed between frames
      */
@@ -150,11 +157,7 @@ public class Game {
             ai.update(deltaTime);
         } else if (frameCounter % 6 == 0) {
             ai.update(deltaTime);
-
-        }//else{
-        // ai.update(deltaTime);
-        //}
-
+        }
         if (frameCounter == 15) {
             frameCounter = 0;
         }

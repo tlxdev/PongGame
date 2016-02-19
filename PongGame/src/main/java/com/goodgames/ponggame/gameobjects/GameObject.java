@@ -28,6 +28,7 @@ import com.goodgames.ponggame.Game;
 import org.joml.Vector3f;
 
 /**
+ * Gameobject, has a 3d model and info about the object.
  *
  * @author lahtelat
  */
@@ -35,19 +36,27 @@ public abstract class GameObject {
 
     protected Game game;
 
+    /**
+     * A gameobject.
+     *
+     * @param game Game instance
+     */
     public GameObject(Game game) {
         this.game = game;
-    }
-    protected float x = 0, y = 0;//koordinaatit 2D
 
-    
+    }
+
+    //koordinaatit 2D
+    protected float x = 0, y = 0;
+
     /**
-     * Moves the object. NOTE: The coordinate system used here is 2D from top down; eg x left right y up down. It is different
-     * from the coordinate system used by OpenGL(x left right, y up down, z forwards backwards);
+     * Moves the object. NOTE: The coordinate system used here is 2D from top
+     * down; eg x left right y up down. It is different from the coordinate
+     * system used by OpenGL(x left right, y up down, z forwards backwards);
+     *
      * @param xMove the amount moved in x
      * @param yMove the amount moevd in y
-    */
-    
+     */
     public void move(float xMove, float yMove) {
         this.x += xMove;
         this.y += yMove;
@@ -64,40 +73,36 @@ public abstract class GameObject {
     protected float speed = 2.5f;
     protected Vector3f direction = new Vector3f(0, 0, 0);
     protected Model model;
-    
-    
+
     /**
      * Set the direction the object is going in.
+     *
      * @param newDirection the new direction of the object
-    */
-        
+     */
     public void setDirection(Vector3f newDirection) {
         this.direction = newDirection;
     }
-   
-    public float getSpeed(){
+
+    public float getSpeed() {
         return speed;
     }
-    
-    public void setSpeed(float speed){
+
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
-    
-    
+
     /**
      * Renders this object. Called every frame. Should only be used by Game
-     * 
-    */
+     *
+     */
     public abstract void render();
-    
-    
-    
-    /**
-     * Updates the object, called every frame. Should only be used by Game#update(), please do not touch.
-     * @param deltaTime the amount of time between framse
-    */
-    
 
+    /**
+     * Updates the object, called every frame. Should only be used by
+     * Game#update(), please do not touch.
+     *
+     * @param deltaTime the amount of time between framse
+     */
     public void update(double deltaTime) {
 
         Vector3f dDir = new Vector3f();

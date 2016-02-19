@@ -28,6 +28,7 @@ import com.goodgames.ponggame.gameobjects.Bat;
 import org.joml.Vector3f;
 
 /**
+ * Handles AI
  *
  * @author lahtelat
  */
@@ -38,6 +39,15 @@ public class AI {
     private Bat ourBat;
     private Ball ball;
 
+    /**
+     * AI.
+     *
+     * @param difficulty the difficulty of the ai
+     * @param game the game instance
+     * @param ourbat the bat that the ai will control
+     *
+     */
+    
     public AI(Difficulty difficulty, Game game, Bat ourbat) {
         this.difficulty = difficulty;
         this.ball = game.getBall();
@@ -48,8 +58,6 @@ public class AI {
     private void setupDifficulty(Difficulty t) {
         switch (t) {
             case EASY:
-                
-                System.out.println("easy");
 
                 ourBat.setSpeed(1);
                 break;
@@ -67,18 +75,18 @@ public class AI {
     public void setBall(Ball ball) {
         this.ball = ball;
 
-    
     }
-    
-    public Difficulty getDifficulty(){
+
+    public Difficulty getDifficulty() {
         return this.difficulty;
     }
 
+   /**
+    * Called every frame, AI logic.
+    * @param deltaTime time between frames
+    */
+    
     public void update(double deltaTime) {
-
-        System.out.println("ball y bat y");
-        System.out.println(ball.getY());
-        System.out.println(ourBat.getY());
 
         if (ball.getX() > ourBat.getX()) {
             ourBat.setDirection(new Vector3f(1, 0, 0));

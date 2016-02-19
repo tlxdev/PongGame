@@ -41,7 +41,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 
 /**
- *
+ * A bat.
  * @author lahtelat
  */
 public class Bat extends GameObject {
@@ -100,7 +100,11 @@ public class Bat extends GameObject {
 
     int vertBuffer;
 
-  
+
+    /**
+     * A bat.
+     * @param game the game instance
+     */
     public Bat(Game game) {
         super(game);
         model = new Model(verts, "lighting");
@@ -111,9 +115,9 @@ public class Bat extends GameObject {
 
     @Override
     public void render() {
-        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer matrix4x4 = BufferUtils.createFloatBuffer(16);
 
-        FloatBuffer modMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer modMatrix = BufferUtils.createFloatBuffer(16);
         Matrix4f modelMatrix = new Matrix4f().translate(new Vector3f(x, 0, y)).scale(0.5f, 0.2f, 0.05f);
         modelMatrix.get(modMatrix);
 
@@ -121,13 +125,13 @@ public class Bat extends GameObject {
         Matrix4f viewMatrixM = game.getCamera().getViewMatrix();
         Matrix4f projectionMatrixM = game.getCamera().getProjectionMatrix();
 
-        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);
         viewMatrixM.get(viewMatrix);
-        FloatBuffer projectionMatrix = BufferUtils.createFloatBuffer(16);//model view projection matriisi
+        FloatBuffer projectionMatrix = BufferUtils.createFloatBuffer(16);
         projectionMatrixM.get(projectionMatrix);
 
         Matrix4f mvp = new Matrix4f();
-        vpm.mul(modelMatrix, mvp);//.get(matrix4x4);
+        vpm.mul(modelMatrix, mvp);
         mvp.get(matrix4x4);
 
         FloatBuffer camera = BufferUtils.createFloatBuffer(3);

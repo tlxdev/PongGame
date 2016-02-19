@@ -47,6 +47,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import org.lwjgl.opengl.GL30;
 
 /**
+ * A class for a 3D model.
  *
  * @author lahtelat
  */
@@ -65,20 +66,23 @@ public class Model {
 
     Vector3f[] triangleNormals;
 
+    /**
+     * A new model.
+     *
+     * @param vertFloats vertices as triangles(x,y,z) as a float array
+     * @param shaderName name of shader to use for this model
+     */
     public Model(float[] vertFloats, String shaderName) {
         this(vertFloats, shaderName, true);
-        /*    verts = new Vertex[vertFloats.length / 3];
-         for (int i = 0; i < verts.length; i++) {
-         verts[i] = new Vertex(vertFloats[i], vertFloats[i + 1], vertFloats[i + 2]);
-         }
-
-         calculateNormals();
-
-         generateBuffers(vertFloats);
-
-         currentShader = new Shader(shaderName);*/
     }
 
+    /**
+     * A new model.
+     *
+     * @param vertFloats vertices as triangles(x,y,z) as a float array
+     * @param shaderName name of shader to use for this model
+     * @param calcNormals calculate normals automatically?  
+     */
     public Model(float[] vertFloats, String shaderName, boolean calcNormals) {
 
         verts = new Vertex[vertFloats.length / 3];
@@ -166,7 +170,7 @@ public class Model {
     }
 
     /**
-     * Renders the model
+     * Renders the model.
      *
      * @param matrix4x4 mvp matrix
      * @param m model matrix
@@ -216,10 +220,10 @@ public class Model {
     }
 
     /**
-     * Renders the model using given render type(eg. GL_TRIANGLES, GL_LINES)
+     * Renders the model using given render type(eg. GL_TRIANGLES, GL_LINES).
      *
      * @param matrix4x4 mvp matrix
-     * @param rendeType render type
+     * @param renderType render type
      */
     public void render(FloatBuffer matrix4x4, int renderType) {
 

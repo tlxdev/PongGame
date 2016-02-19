@@ -33,9 +33,13 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 /**
- *
+ * Game window class, takes care of creating and setting up both window and the game.
  * @author lahtelat
  */
+
+
+
+
 public class GameWindow implements Runnable {
 
     private long windowId = -1;
