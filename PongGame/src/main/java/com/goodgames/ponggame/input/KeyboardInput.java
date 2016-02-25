@@ -72,13 +72,10 @@ public class KeyboardInput {
             game.pause();
         }
         if (key == GLFW_KEY_I && action == GLFW_RELEASE) {
-            System.out.println("change diff");
             if (game.getAi().getDifficulty().equals(Difficulty.EASY)) {
                 game.setAiDifficulty(Difficulty.HARD);
-                System.out.println("hard");
             } else if (game.getAi().getDifficulty().equals(Difficulty.HARD)) {
                 game.setAiDifficulty(Difficulty.IMPOSSIBLE);
-                System.out.println("imps");
             } else {
                 game.setAiDifficulty(Difficulty.EASY);
             }
