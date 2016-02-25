@@ -66,6 +66,19 @@ public class Ball extends GameObject {
 
     private Shader currentShader;
 
+    private float timeToLive = -1;
+    
+    private boolean needsDeleted = false;
+    
+    public void setTimeToLive(float time){
+        this.timeToLive=time;
+        needsDeleted=true;
+    }
+    
+    public boolean needsToBeDeleted(){
+        return needsDeleted && timeToLive <= 0;
+    }
+    
     private int vertAmount;
     private int vertBuffer = 0;
 
@@ -84,6 +97,11 @@ public class Ball extends GameObject {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
+        
+        if(needsDeleted){
+        timeToLive -= deltaTime;
+        }
+       
         /*
          törmäykset( atm hardcoded ja seinät on näkymättömät )
          */

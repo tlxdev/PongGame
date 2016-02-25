@@ -15,3 +15,5 @@
 5/2/16: Tutkimus, normaaleiden laskun korjaus yms: 3h
 
 19/2/16: AI, checkstyles, refaktoroitia: 4h
+
+25/2/16: Hieno effekti pallon poistumiselle, ai vaikeustason vaihto

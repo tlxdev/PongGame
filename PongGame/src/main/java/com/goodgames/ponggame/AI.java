@@ -47,7 +47,6 @@ public class AI {
      * @param ourbat the bat that the ai will control
      *
      */
-    
     public AI(Difficulty difficulty, Game game, Bat ourbat) {
         this.difficulty = difficulty;
         this.ball = game.getBall();
@@ -63,13 +62,18 @@ public class AI {
                 break;
             case HARD:
 
-                ourBat.setSpeed(2);
+                ourBat.setSpeed(3);
                 break;
             case IMPOSSIBLE:
 
                 ourBat.setSpeed(5);
                 break;
         }
+    }
+
+    public void setDifficulty(Difficulty newDiff) {
+        this.difficulty = newDiff;
+        setupDifficulty(this.difficulty);
     }
 
     public void setBall(Ball ball) {
@@ -81,11 +85,11 @@ public class AI {
         return this.difficulty;
     }
 
-   /**
-    * Called every frame, AI logic.
-    * @param deltaTime time between frames
-    */
-    
+    /**
+     * Called every frame, AI logic.
+     *
+     * @param deltaTime time between frames
+     */
     public void update(double deltaTime) {
 
         if (ball.getX() > ourBat.getX()) {

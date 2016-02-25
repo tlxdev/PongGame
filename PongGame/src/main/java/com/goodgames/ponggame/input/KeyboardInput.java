@@ -23,6 +23,8 @@
  */
 package com.goodgames.ponggame.input;
 
+import com.goodgames.ponggame.AI;
+import com.goodgames.ponggame.AI.Difficulty;
 import com.goodgames.ponggame.Game;
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -66,9 +68,22 @@ public class KeyboardInput {
      * @param mods modifiers
      */
     public void onInput(int key, int action, int mods) {
-            if(key == GLFW_KEY_P && action == GLFW_RELEASE){
-                game.pause();
+        if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
+            game.pause();
+        }
+        if (key == GLFW_KEY_I && action == GLFW_RELEASE) {
+            System.out.println("change diff");
+            if (game.getAi().getDifficulty().equals(Difficulty.EASY)) {
+                game.setAiDifficulty(Difficulty.HARD);
+                System.out.println("hard");
+            } else if (game.getAi().getDifficulty().equals(Difficulty.HARD)) {
+                game.setAiDifficulty(Difficulty.IMPOSSIBLE);
+                System.out.println("imps");
+            } else {
+                game.setAiDifficulty(Difficulty.EASY);
             }
+
+        }
     }
 
 }

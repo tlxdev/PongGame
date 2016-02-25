@@ -42,7 +42,9 @@ import org.lwjgl.glfw.GLFW;
  */
 public class Game {
 
-    private ArrayList<GameObject> objects = new ArrayList<>();
+    private ArrayList<GameObject> gameObjects = new ArrayList<>();
+
+    private ArrayList<GameObject> toDelete = new ArrayList<>();
 
     private Bat player1, player2;
 
@@ -102,6 +104,10 @@ public class Game {
     public Ball getBall() {
         return ball;
     }
+    
+    public AI getAi(){
+        return ai;
+    }
 
     private Ball ball;
 
@@ -111,6 +117,7 @@ public class Game {
     public Game() {
         camera = new Camera();
         ball = new Ball(this);
+        gameObjects.add(ball);
         player1 = new Bat(this);
         player2 = new Bat(this);
         wall1 = new Wall(this);
@@ -136,8 +143,15 @@ public class Game {
         player2.render();
         wall1.render();
         wall2.render();
-        ball.render();
+        for (GameObject go : gameObjects) {
+            go.render();
+        }
+        //ball.render();
 
+    }
+
+    public void setAiDifficulty(Difficulty newDiff) {
+        ai.setDifficulty(newDiff);
     }
 
     /**
@@ -147,7 +161,18 @@ public class Game {
      */
     public void update(double deltaTime) {
 
-        ball.update(deltaTime);
+        //ball.update(deltaTime);
+        for (GameObject go : gameObjects) {
+            go.update(deltaTime);
+            Ball b = (Ball) go;
+            if (b.needsToBeDeleted()) {
+                toDelete.add(b);
+            }
+        }
+
+        for (GameObject go : toDelete) {
+            gameObjects.remove(go);
+        }
 
         player2.update(deltaTime);
         /*
@@ -172,8 +197,9 @@ public class Game {
 
         if (ball.getY() > 3.2 || ball.getY() < -2) {
             System.out.println("lose");
+            ball.setTimeToLive(0.5f);
             ball = new Ball(this);
-
+            gameObjects.add(ball);
             ball.setDirection(new Vector3f(Math.max(new Random().nextFloat(), 0.5f), 0, Math.max(new Random().nextFloat(), 0.5f)).normalize());
             ai.setBall(ball);
         }
