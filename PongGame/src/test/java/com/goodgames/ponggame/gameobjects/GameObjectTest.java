@@ -58,59 +58,57 @@ public class GameObjectTest {
 
     /**
      * Test of move method, of class GameObject.
+     *//*
+     @Test
+     public void testMoveX() {
+     Ball testObject = new Ball(null);
+     testObject.move(2, 0);
+     assertEquals(2.f, testObject.getX(), 0.01f);
+     }
+
+     @Test
+     public void testMoveY() {
+     Ball testObject = new Ball(null);
+     testObject.move(0, 2);
+     assertEquals(2.f, testObject.getY(), 0.01f);
+     }
+
+     @Test
+     public void testMoveXY() {
+     Ball testObject = new Ball(null);
+     testObject.move(2, 2);
+     assertEquals(2.f, testObject.getY(), 0.01f);
+     assertEquals(2.f, testObject.getX(), 0.01f);
+     }
+
+     @Test
+     public void testDirectionAndUpdate() {
+     Ball testObject = new Ball(null);
+     testObject.setDirection(new Vector3f(1, 0, 0));
+     testObject.update(1);
+     assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
+
+     assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
+     }
+
+     @Test
+     public void testSpeed() {
+     Ball testObject = new Ball(null);
+     testObject.setDirection(new Vector3f(1, 0, 0));
+     testObject.update(1);
+     assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
+
+     assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
+
+     testObject = new Ball(null);
+     testObject.setDirection(new Vector3f(1, 0, 0));
+     testObject.setSpeed(1.0f);
+     testObject.update(1);
+     assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
+
+     assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
+
+     }
      */
-    @Test
-    public void testMoveX() {
-        GameObject testObject = new GameObject(null);
-        testObject.move(2, 0);
-        assertEquals(2.f, testObject.getX(), 0.01f);
-    }
-
-    @Test
-    public void testMoveY() {
-        GameObject testObject = new GameObject(null);
-        testObject.move(0, 2);
-        assertEquals(2.f, testObject.getY(), 0.01f);
-    }
-
-    @Test
-    public void testMoveXY() {
-        GameObject testObject = new GameObject(null);
-        testObject.move(2, 2);
-        assertEquals(2.f, testObject.getY(), 0.01f);
-        assertEquals(2.f, testObject.getX(), 0.01f);
-    }
-
-    /*
-     testaa, toimiiko entity-tyylinen pöivittäminen oikein
-     */
-    @Test
-    public void testDirectionAndUpdate() {
-        GameObject testObject = new GameObject(null);
-        testObject.setDirection(new Vector3f(1, 0, 0));
-        testObject.update(1);
-        assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
-
-        assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
-    }
-
-    @Test
-    public void testSpeed() {
-        GameObject testObject = new GameObject(null);
-        testObject.setDirection(new Vector3f(1, 0, 0));
-        testObject.update(1);
-        assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
-
-        assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
-
-        testObject = new GameObject(null);
-        testObject.setDirection(new Vector3f(1, 0, 0));
-        testObject.setSpeed(1.0f);
-        testObject.update(1);
-        assertEquals(testObject.getX(), 1 * testObject.getSpeed(), 0.01f);
-
-        assertEquals(testObject.getY(), 0 * testObject.getSpeed(), 0.01f);
-
-    }
 
 }

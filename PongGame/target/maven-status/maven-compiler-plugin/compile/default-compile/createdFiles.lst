@@ -1,3 +1,17 @@
+com/goodgames/ponggame/gameobjects/Bat.class
+com/goodgames/ponggame/gameobjects/Ball.class
+com/goodgames/ponggame/AI$Difficulty.class
 com/goodgames/ponggame/Main.class
+com/goodgames/ponggame/gameobjects/Wall.class
+com/goodgames/ponggame/rendering/Model$Vertex.class
 com/goodgames/ponggame/Game.class
+com/goodgames/ponggame/Camera.class
+com/goodgames/ponggame/input/MouseInput.class
+com/goodgames/ponggame/GameWindow$1.class
+com/goodgames/ponggame/rendering/Model.class
+com/goodgames/ponggame/AI.class
+com/goodgames/ponggame/input/KeyboardInput.class
+com/goodgames/ponggame/gameobjects/GameObject.class
+com/goodgames/ponggame/AI$1.class
+com/goodgames/ponggame/rendering/Shader.class
 com/goodgames/ponggame/GameWindow.class

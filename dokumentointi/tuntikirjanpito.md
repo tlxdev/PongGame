@@ -17,3 +17,5 @@
 19/2/16: AI, checkstyles, refaktoroitia: 4h
 
 25/2/16: Hieno effekti pallon poistumiselle, ai vaikeustason vaihto
+
+4/3/16: .jar tiedoston tekeminen : 20min

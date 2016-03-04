@@ -23,6 +23,7 @@
  */
 package com.goodgames.ponggame.rendering;
 
+import com.goodgames.ponggame.Main;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.nio.charset.Charset;
@@ -70,9 +71,9 @@ public class Shader {
         /*
          shaderit tallennetaan shaders/nimi.vert ja shaders/nimi.frag
          */
-        String vert = readFile("shaders/" + shaderName + ".vert");
+        String vert = readFile(Main.SHADER_DIRECTORY + shaderName + ".vert");
 
-        String frag = readFile("shaders/" + shaderName + ".frag");
+        String frag = readFile(Main.SHADER_DIRECTORY + shaderName + ".frag");
         int vertId;
         int fragId;
 
