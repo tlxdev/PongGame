@@ -25,21 +25,21 @@ package com.goodgames.ponggame;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 /**
- * Game window class, takes care of creating and setting up both window and the game.
+ * Game window class, takes care of creating and setting up both window and the
+ * game.
+ *
  * @author lahtelat
  */
-
-
-
-
 public class GameWindow implements Runnable {
 
     private long windowId = -1;
@@ -48,10 +48,13 @@ public class GameWindow implements Runnable {
     private double lastFrameTime;//fps laskentaan
 
     private GLFWKeyCallback keyCallback;
+    private GLFWWindowSizeCallback windowCallBack;
 
     private boolean started = false;
 
     private boolean isTest = false;
+
+    private int windowWidth = 800, windowHeight = 600;
 
     public boolean hasStarted() {
         return started;
@@ -97,6 +100,19 @@ public class GameWindow implements Runnable {
                 game.getKeyboardInput().onInput(key, action, mods);
 
             }
+        });
+
+        GLFW.glfwSetWindowSizeCallback(windowId, windowCallBack = new GLFWWindowSizeCallback() {
+
+            @Override
+            public void invoke(long windowId, int width, int height) {
+                GL11.glViewport(0, 0, width, width);
+                windowWidth = width;
+                windowHeight = height;
+                game.getCamera().setAspectRatio((float)((float)windowWidth / (float)windowHeight));
+
+            }
+
         });
 
         GL.createCapabilities();

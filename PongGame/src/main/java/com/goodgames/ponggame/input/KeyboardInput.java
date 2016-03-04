@@ -71,6 +71,11 @@ public class KeyboardInput {
         if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
             game.pause();
         }
+        
+        if(key == GLFW_KEY_B){
+            game.addBall();
+        }
+        
         if (key == GLFW_KEY_I && action == GLFW_RELEASE) {
             if (game.getAi().getDifficulty().equals(Difficulty.EASY)) {
                 game.setAiDifficulty(Difficulty.HARD);
@@ -81,6 +86,8 @@ public class KeyboardInput {
             }
 
         }
+        
+        
     }
 
 }

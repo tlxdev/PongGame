@@ -40,6 +40,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 /**
  * A class for loading shaders.
+ *
  * @author lahtelat
  */
 public class Shader {
@@ -48,6 +49,7 @@ public class Shader {
 
     /**
      * A new shader.
+     *
      * @param shaderName the name of the shader(don't include .vert or .frag)
      */
     public Shader(String shaderName) {
@@ -63,12 +65,12 @@ public class Shader {
         if (GL20.glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
             String infoLog = GL20.glGetShaderInfoLog(id);
             System.out.println("failed to compile " + type + " shader error: \n" + infoLog);
-        }
+        }   
     }
 
     private void makeShader(String shaderName) {
 
-        /*
+        /*  
          shaderit tallennetaan shaders/nimi.vert ja shaders/nimi.frag
          */
         String vert = readFile(Main.SHADER_DIRECTORY + shaderName + ".vert");
@@ -115,7 +117,6 @@ public class Shader {
             return;
         }
 
-        System.out.println("Shader " + shaderName + " loaded succesfully");
         glDetachShader(shaderId, vertId);
         glDetachShader(shaderId, fragId);
     }

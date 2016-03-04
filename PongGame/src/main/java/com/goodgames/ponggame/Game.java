@@ -42,6 +42,8 @@ import org.lwjgl.glfw.GLFW;
  */
 public class Game {
 
+    private int player1Score = 0, player2Score = 0;
+
     private ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     private ArrayList<GameObject> toDelete = new ArrayList<>();
@@ -104,8 +106,8 @@ public class Game {
     public Ball getBall() {
         return ball;
     }
-    
-    public AI getAi(){
+
+    public AI getAi() {
         return ai;
     }
 
@@ -187,7 +189,7 @@ public class Game {
             frameCounter = 0;
         }
         if (frameCounter == 0) {
-            GLFW.glfwSetWindowTitle(windowId, "Pong FPS: " + (int) (1 / deltaTime));
+            GLFW.glfwSetWindowTitle(windowId, "Pong FPS: " + (int) (1 / deltaTime) + " scores " + player1Score + ":" + player2Score);
         }
 
         frameCounter++;
@@ -196,6 +198,11 @@ public class Game {
         keyboardInput.update(deltaTime);
 
         if (ball.getY() > 3.2 || ball.getY() < -2) {
+            if (ball.getY() > 3.2) {
+                player2Score++;
+            } else {
+                player1Score++;
+            }
             System.out.println("lose");
             ball.setTimeToLive(0.5f);
             ball = new Ball(this);
@@ -203,6 +210,14 @@ public class Game {
             ball.setDirection(new Vector3f(Math.max(new Random().nextFloat(), 0.5f), 0, Math.max(new Random().nextFloat(), 0.5f)).normalize());
             ai.setBall(ball);
         }
+
+    }
+
+    public void addBall() {
+
+        Ball newBall = new Ball(this);
+        gameObjects.add(newBall);
+        newBall.setDirection(new Vector3f(Math.max(new Random().nextFloat(), 0.5f), 0, Math.max(new Random().nextFloat(), 0.5f)).normalize());
 
     }
 

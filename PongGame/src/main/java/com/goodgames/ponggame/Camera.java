@@ -41,10 +41,19 @@ public class Camera {
 
     private Matrix4f viewProjectionMatrix = new Matrix4f();
 
+    private float aspectRatio = 4.f / 3.f;
+
     public Camera() {
         viewMatrix = new Matrix4f().lookAt(cameraPos, new Vector3f(0, 0, 0), up);
-        projectionMatrix = new Matrix4f().perspective((float) Math.toRadians((double) 45), 4.f / 3.f, 0.1f, 100.f);
+        projectionMatrix = new Matrix4f().perspective((float) Math.toRadians((double) 45), aspectRatio, 0.1f, 100.f);
 
+        projectionMatrix.mul(viewMatrix, viewProjectionMatrix);
+
+    }
+
+    public void setAspectRatio(float newRatio) {
+        this.aspectRatio = newRatio;
+        projectionMatrix = new Matrix4f().perspective((float) Math.toRadians((double) 45), aspectRatio, 0.1f, 100.f);
         projectionMatrix.mul(viewMatrix, viewProjectionMatrix);
 
     }
